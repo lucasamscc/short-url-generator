@@ -2,8 +2,6 @@
 
 Um encurtador de URL de alta performance com funcionalidade de expiração (TTL), desenvolvido com **FastAPI** e **Redis** no backend, e **React** com **TailwindCSS** no frontend.
 
-Toda a aplicação está conteinerizada, facilitando a execução e testes locais.
-
 ---
 
 ## 🚀 Como Executar o Projeto com Docker (Recomendado)
@@ -20,9 +18,9 @@ docker compose up -d --build
 Isso inicializará os seguintes serviços:
 - **Frontend (React)**: [http://localhost:5173](http://localhost:5173)
 - **Backend (FastAPI)**: [http://localhost:8000](http://localhost:8000)
-- **Redis**: Porta `6379` (usado internamente pelo backend)
+- **Redis**: Porta `6379`
 
-A documentação interativa da API (Swagger) estará disponível em [http://localhost:8000/docs](http://localhost:8000/docs).
+A documentação da API (Swagger) estará disponível em [http://localhost:8000/docs](http://localhost:8000/docs).
 
 Para derrubar os containers:
 ```bash
@@ -61,6 +59,6 @@ npm run dev -- --host 0.0.0.0 --port 5173
 
 ## 📝 Detalhes da Arquitetura
 
-- **Redis**: Armazenamento rápido em memória que lida nativamente com a expiração das chaves através do seu TTL (`SETEX`).
-- **FastAPI**: Backend leve, rápido e com tipagem estática integrada (Pydantic).
-- **React**: Interface interativa moderna criada via Vite, estilizada com TailwindCSS no modo escuro (*glassmorphism*), gradiente indigo/cyan e micro-animações (fade-in, slide-up).
+- **Redis**: Armazenamento em memória que lida nativamente com a expiração das chaves através do seu TTL (`SETEX`).
+- **FastAPI**: Backend com tipagem estática integrada (Pydantic).
+- **React**: Interface criada via Vite, estilizada com TailwindCSS no modo escuro (*glassmorphism*), gradiente indigo/cyan e micro-animações (fade-in, slide-up).
