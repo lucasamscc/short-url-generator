@@ -2,94 +2,65 @@
 
 Um encurtador de URL de alta performance com funcionalidade de expiração (TTL), desenvolvido com **FastAPI** e **Redis** no backend, e **React** com **TailwindCSS** no frontend.
 
-O nome do projeto é uma homenagem ao lendário Danny DeVito.
+Toda a aplicação está conteinerizada, facilitando a execução e testes locais.
 
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 Como Executar o Projeto com Docker (Recomendado)
 
 ### Pré-requisitos
 - [Docker e Docker Compose](https://docs.docker.com/get-docker/)
-- [Node.js](https://nodejs.org/) (v18 ou superior)
-- [Python 3.10+](https://www.python.org/)
 
----
-
-### 1. Iniciar o Banco de Dados (Redis)
-
-Suba o container do Redis utilizando o Docker Compose na raiz do projeto:
+Para subir toda a pilha de serviços (Redis, Backend FastAPI e Frontend React), basta executar na raiz do projeto:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-O Redis estará disponível na porta padrão `6379`.
+Isso inicializará os seguintes serviços:
+- **Frontend (React)**: [http://localhost:5173](http://localhost:5173)
+- **Backend (FastAPI)**: [http://localhost:8000](http://localhost:8000)
+- **Redis**: Porta `6379` (usado internamente pelo backend)
+
+A documentação interativa da API (Swagger) estará disponível em [http://localhost:8000/docs](http://localhost:8000/docs).
+
+Para derrubar os containers:
+```bash
+docker compose down
+```
 
 ---
 
-### 2. Executar o Backend (FastAPI)
+## 🛠️ Desenvolvimento e Execução Local (Alternativo)
 
-Navegue até o diretório do backend, crie o ambiente virtual, instale as dependências e inicie o servidor:
+Caso queira rodar os serviços fora dos containers para desenvolvimento rápido:
 
+### 1. Iniciar apenas o Redis
+```bash
+docker compose up -d redis
+```
+
+### 2. Iniciar o Backend (FastAPI)
 ```bash
 cd backend
-
-# Criar ambiente virtual
 python3 -m venv venv
 source venv/bin/activate
-
-# Instalar dependências
 pip install -r requirements.txt
-
-# Iniciar o servidor de desenvolvimento
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
+- Para rodar os testes unitários no backend: `pytest test_main.py`
 
-- A API estará disponível em: [http://localhost:8000](http://localhost:8000)
-- Documentação interativa (Swagger UI): [http://localhost:8000/docs](http://localhost:8000/docs)
-
-#### Executando Testes Unitários
-Para rodar os testes unitários do backend:
+### 3. Iniciar o Frontend (React + Vite)
 ```bash
-pytest test_main.py
-```
-
----
-
-### 3. Executar o Frontend (React + Vite)
-
-Navegue até o diretório do frontend, instale as dependências e inicie o servidor de desenvolvimento:
-
-```bash
-cd ../frontend
-
-# Instalar dependências
+cd frontend
 npm install
-
-# Iniciar o Vite
 npm run dev -- --host 0.0.0.0 --port 5173
 ```
 
-O frontend estará disponível em: [http://localhost:5173](http://localhost:5173)
-
 ---
 
-## 🛠️ Detalhes do Desenvolvimento
+## 📝 Detalhes da Arquitetura
 
-### Backend (FastAPI + Redis)
-- **FastAPI**: Escolhido pela alta performance, tipagem estática integrada (Pydantic) e auto-geração de documentação.
-- **Redis**: Armazenamento rápido em memória. A expiração das URLs é gerenciada de forma nativa usando o TTL (`time-to-live`) do Redis com o comando `SETEX`.
-- **Rotas**:
-  - `POST /api/shorten`: Encurta a URL original e define a expiração em horas (`expiration_hours`).
-  - `GET /{short_code}`: Redireciona o usuário para a URL original com status `307 (Temporary Redirect)`. Caso a URL tenha expirado ou não exista, retorna erro `404`.
-
-### Frontend (React + TailwindCSS)
-- Criado via **Vite** para inicialização rápida.
-- Estilização premium baseada em Dark Mode com efeitos em vidro (*glassmorphism*), gradientes de cor modernos (indigo/cyan) e micro-animações elegantes baseadas em keyframes do Tailwind (fade-in, slide-up).
-- Seletor simples para escolha da expiração da URL (1h, 12h, 24h e 72h).
-- Funcionalidade para cópia direta da URL encurtada.
-
----
-
-## 📝 Licença
-Este projeto está sob a licença MIT.
+- **Redis**: Armazenamento rápido em memória que lida nativamente com a expiração das chaves através do seu TTL (`SETEX`).
+- **FastAPI**: Backend leve, rápido e com tipagem estática integrada (Pydantic).
+- **React**: Interface interativa moderna criada via Vite, estilizada com TailwindCSS no modo escuro (*glassmorphism*), gradiente indigo/cyan e micro-animações (fade-in, slide-up).
