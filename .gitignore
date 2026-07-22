@@ -1,0 +1,15 @@
+# Python virtual env
+backend/venv/
+__pycache__/
+*.pyc
+
+# Node dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/.env*
+
+# Local configuration
+.env
+.idea/
+.vscode/
+.gemini/
