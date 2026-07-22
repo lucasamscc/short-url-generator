@@ -1,4 +1,4 @@
-# danny devito url
+# short-url
 
 Um encurtador de URL de alta performance com funcionalidade de expiração (TTL), desenvolvido com **FastAPI** e **Redis** no backend, e **React** com **TailwindCSS** no frontend.
 
